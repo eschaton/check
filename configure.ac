@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 # Prelude.
-AC_PREREQ([2.59])
+AC_PREREQ([2.73])
 
 AC_INIT([Check], [0.15.2], [check-devel at lists dot sourceforge dot net])
 CHECK_MAJOR_VERSION=0
@@ -43,7 +43,7 @@ AC_SUBST([PROJECT_VERSION], $CHECK_VERSION)
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([no])])
 
 AC_ARG_ENABLE(gcov,
-AC_HELP_STRING([--enable-gcov],
+AS_HELP_STRING([--enable-gcov],
 	       [turn on test coverage @<:@default=no@:>@]),
 [case "${enableval}" in
   yes) enable_gcov=true ;;
@@ -69,7 +69,7 @@ fi
 AM_CONDITIONAL(ENABLE_GCOV, test x"$enable_gcov" = "xtrue")
 
 AC_ARG_ENABLE(timeout-tests,
-AC_HELP_STRING([--enable-timeout-tests],
+AS_HELP_STRING([--enable-timeout-tests],
 	       [turn on timeout tests @<:@default=yes@:>@]),
 [case "${enableval}" in
   yes) enable_timeout_tests=true ;;
@@ -78,7 +78,7 @@ AC_HELP_STRING([--enable-timeout-tests],
 esac], [enable_timeout_tests=true ])
 
 AC_ARG_ENABLE(build-docs,
-AC_HELP_STRING([--enable-build-docs],
+AS_HELP_STRING([--enable-build-docs],
            [turn on building documentation @<:@default=yes@:>@]),
 [case "${enableval}" in
   yes) enable_build_docs=true ;;
@@ -89,7 +89,7 @@ esac], [enable_build_docs=true ])
 AM_CONDITIONAL(NO_TIMEOUT_TESTS, test x"$enable_timeout_tests" = "xfalse")
 
 AC_ARG_ENABLE(subunit,
-AC_HELP_STRING([--enable-subunit],
+AS_HELP_STRING([--enable-subunit],
 	       [enable support for the subunit test protocol @<:@default=autodetect@:>@]),
 [case "${enableval}" in
   yes)
@@ -109,7 +109,7 @@ esac],
  enable_subunit=autodetect])
 
 AC_ARG_ENABLE(fork,
-AC_HELP_STRING([--enable-fork],
+AS_HELP_STRING([--enable-fork],
 	       [enable support for fork @<:@default=autodetect@:>@]),
 [case "${enableval}" in
   yes) enable_fork=true ;;
@@ -118,7 +118,7 @@ AC_HELP_STRING([--enable-fork],
 esac], [enable_fork=true ])
 
 AC_ARG_ENABLE(snprintf-replacement,
-AC_HELP_STRING([--enable-snprintf-replacement],
+AS_HELP_STRING([--enable-snprintf-replacement],
 	       [enable check snprintf replacement, (even if the system provides a C99 compliant version) @<:@default=autodetect@:>@]),
 [case "${enableval}" in
   yes) enable_snprintf_replacement=true ;;
@@ -126,7 +126,7 @@ AC_HELP_STRING([--enable-snprintf-replacement],
 esac], [enable_snprintf_replacement=autodetect ])
 
 AC_ARG_ENABLE(timer-replacement,
-AC_HELP_STRING([--enable-timer-replacement],
+AS_HELP_STRING([--enable-timer-replacement],
 	       [enable check timer replacement, (even if the system provides timer_create, timer_settime, and timer_delete) @<:@default=autodetect@:>@]),
 [case "${enableval}" in
   yes) enable_timer_replacement=true ;;
@@ -249,7 +249,6 @@ AC_CHECK_MEMBERS([struct itimerspec.it_interval, struct itimerspec.it_value], []
 ])
 
 # Checks for header files.
-AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS([fcntl.h stddef.h stdlib.h string.h sys/time.h unistd.h])
 AX_CREATE_STDINT_H(check_stdint.h)
@@ -309,7 +308,8 @@ AC_TYPE_SIZE_T
 AC_TYPE_INTMAX_T
 AC_TYPE_UINTMAX_T
 AC_TYPE_UINT32_T
-AC_HEADER_TIME
+AC_CHECK_HEADERS_ONCE([sys/time.h])
+
 AC_STRUCT_TM
 
 AC_CHECK_SIZEOF(int, 4)
